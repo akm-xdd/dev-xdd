@@ -1,193 +1,69 @@
 ---
 title: Have we forgotten how to code?
-description: What is happening to the coding community?
+description: A reflection on the current state of software development.
 date: 2024-05-21
 published: true
 ---
 
-# Introduction
+# A little background
 
-The following markdown cheatsheet is adapted from: https://guides.github.com/features/mastering-markdown/
+A couple of months back, I came across this [blog post](https://www.davidhaney.io/npm-left-pad-have-we-forgotten-how-to-program/) by David Haney. Although he published it in 2016, the main idea is still relavant today. Have we forgotten how to code? A simple question, but with a complex answer. What has changed in the last few years that has made software development more complex? Or has it gotten simpler? Why is creating a simple web application so complicated now whereas creating something much more complex has become easier? Let's take a look at one exhibit to get started.
 
-# What is Markdown?
+## Exhibit A: The left-pad incident
 
-Markdown is a way to style text on the web. You control the display of the document; formatting words as bold or italic, adding images, and creating lists are just a few of the things we can do with Markdown. Mostly, Markdown is just regular text with a few non-alphabetic characters thrown in, like `#` or `*`.
+Here's a little refresher for those who forgot or never heard about it. In March 2016, Azer Koçulu after a dispute with Kik Interactive, unpublished all his modules from npm, including the popular `left-pad` module. This caused a lot of builds to fail as many projects depended on this module. When I first read about this, I found it hilarious. How can a single module break the internet? A little deeper research about the incident answered a lot of questions, whilst raising a lot more at the same time. Taken straight from the blog post and the npm repository, here is the code for `left-pad`:
 
-# Syntax guide
-
-Here’s an overview of Markdown syntax that you can use anywhere on GitHub.com or in your own text files.
-
-## Headers
-
-```mdx
-# This is a h1 tag
-
-## This is a h2 tag
-
-#### This is a h4 tag
-```
-
-# This is a h1 tag
-
-## This is a h2 tag
-
-#### This is a h4 tag
-
-## Emphasis
-
-```mdx
-_This text will be italic_
-
-**This text will be bold**
-
-_You **can** combine them_
-```
-
-_This text will be italic_
-
-**This text will be bold**
-
-_You **can** combine them_
-
-## Lists
-
-### Unordered
-
-```mdx
-- Item 1
-- Item 2
-  - Item 2a
-  - Item 2b
-```
-
-- Item 1
-- Item 2
-  - Item 2a
-  - Item 2b
-
-### Ordered
-
-```mdx
-1. Item 1
-1. Item 2
-1. Item 3
-   1. Item 3a
-   1. Item 3b
-```
-
-1. Item 1
-1. Item 2
-1. Item 3
-   1. Item 3a
-   1. Item 3b
-
-## Images
-
-```mdx
-![GitHub Logo](https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png)
-Format: ![Alt Text](url)
-```
-
-![GitHub Logo](https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png)
-
-## Links
-
-```mdx
-http://github.com - automatic!
-[GitHub](http://github.com)
-```
-
-http://github.com - automatic!
-[GitHub](http://github.com)
-
-## Blockquotes
-
-```mdx
-As Kanye West said:
-
-> We're living the future so
-> the present is our past.
-```
-
-As Kanye West said:
-
-> We're living the future so
-> the present is our past.
-
-## Inline code
-
-```mdx
-I think you should use an
-`<addr>` element here instead.
-```
-
-I think you should use an
-`<addr>` element here instead.
-
-## Syntax highlighting
-
-Here’s an example of how you can use syntax highlighting with [GitHub Flavored Markdown](https://help.github.com/articles/basic-writing-and-formatting-syntax/):
-
-````mdx
-```js:fancyAlert.js
-function fancyAlert(arg) {
-  if (arg) {
-    $.facebox({ div: '#foo' })
+```javascript
+module.exports = leftpad;
+function leftpad (str, len, ch) {
+  str = String(str);
+  var i = -1;
+  if (!ch && ch !== 0) ch = ' ';
+  len = len - str.length;
+  while (++i < len) {
+    str = ch + str;
   }
-}
-```
-````
-
-And here's how it looks - nicely colored with styled code titles!
-
-```jsx
-function fancyAlert(arg) {
-  if (arg) {
-    $.facebox({ div: "#foo" });
-  }
+  return str;
 }
 ```
 
-## Footnotes
+Astonishingly simple, isn't it? Here is a simpler version: 
+  
+  ```javascript
+function leftpad(str, len, ch = ' ') {
+  return ch.repeat(len - String(str).length) + str;
+}
+```
+As bad of a rep Javascript gets, the above code is fairly simple to not only understand, but also to implement. it also performs faster. You know what? What if I tell you, Javascript has a built-in function called `padStart` that does the exact same thing, starting from, **ES2017**. Here is the code for `padStart`: 
 
-```mdx
-Here is a simple footnote[^1]. With some additional text after it.
-
-[^1]: My reference.
+```javascript
+'abc'.padStart(10);         // "       abc"
+'abc'.padStart(10, "foo");   // "foofoofabc"
 ```
 
-Here is a simple footnote[^1]. With some additional text after it.
 
-[^1]: My reference.
+So what does this have anything to do with not being able to code? Well, it has nothing to do with it tbh. But it does raise a quetion: At what point did someone get so lazy that they decided to create a massive library and did not bother to write a simple function like `left-pad`? Was it actually laziness? Or was it just a lack of knowledge? Or was it something else? No one knows for sure. But it does make you wonder, doesn't it? Let's rule out the lack of knowledge for now. Let's say it was laziness. But then again, why would someone be lazy enough to not write a simple function? Maybe it was just a lack of time. But then again, how long does it take to write a function like `left-pad`? A couple of minutes? Maybe an hour? Keep a note of this question, we will come back to it later.
 
-## Task Lists
+## The Present and The Future
 
-```mdx
-- [x] list syntax required (any unordered or ordered list supported)
-- [x] this is a complete item
-- [ ] this is an incomplete item
-```
+Snap back to the current day. We have thousands and thousands of libraries and frameworks to choose from. We also have libraries and frameworks for those libraries and frameworks. We have tools that generate code for us and tools that generate the content to test that code. Don't get me wrong, all of this is great. It has made it so much more easier, faster and enjoyable to write code. But it also has implications that we need to consider. We have so many new people trying to get into software development. They are overwhelmed by the sheer number of tools and libraries available. They are confused about what to learn and what not to learn. They are scared of not being able to keep up with the pace of the industry. They are scared of wasting time learning something that might not be relevant in a few months, let alone a few years. And this gap is only going to get wider. This makes it so much more difficult for people to start building something. And this is where the problem lies.
 
-- [x] list syntax required (any unordered or ordered list supported)
-- [x] this is a complete item
-- [ ] this is an incomplete item
+## The Problem
 
-## Tables
+The problem is that we are pushing so much new stuff every single day, that we are unable to retain even a fraction of it. The sheer amount of work to be done in order to keep up with these tools and frameworks is overwhelming. This is not a problem of the present, but has been developing for a long time. We have forgotten how to code. We are focussed more on keeping up and meeting the demand and requirements. Times have changed. Nobody can be blamed for this. It's just the way things are. People beginning their careers are expected to know so much more than what was expected a few years back. Who has the time to learn the basics when you have to learn the latest and greatest? To think that someone who has created a massive library that will be used by millions of users everyday, did not know how to write `left-pad` will be a little unjust. But it did happen. And it will happen again. And again. 
 
-You can create tables by assembling a list of words and dividing them with hyphens `-` (for the first row), and then separating each column with a pipe `|`:
+## What to expect?
 
-```mdx
-| First Header                | Second Header                |
-| --------------------------- | ---------------------------- |
-| Content from cell 1         | Content from cell 2          |
-| Content in the first column | Content in the second column |
-```
+Well it is not a surpirse that Software Development is going to get more complex. It is also not a surprise that the market is going to get more competitive. The only thing that we can do is to keep up with the pace. But at what cost? We are already seeing the effects of this. People are burning out faster than ever. People are leaving the industry. People are getting fired for not being able to keep up. Amidst all this, people are not learning. College curriculums have been shamed for not teaching the latest developments in the industry. And I agree with it. But something that these outdates curriculum do teach is the basics. Learning to code is not all about building complex projects. It is about how things work. It is about why things work the way they do. 
 
-| First Header                | Second Header                |
-| --------------------------- | ---------------------------- |
-| Content from cell 1         | Content from cell 2          |
-| Content in the first column | Content in the second column |
+## My thoughts
 
-## Strikethrough
+Now to end this abomination of a read, I'd like to share my 2 cents. I am not saying that we should stop learning the latest developments, the latest technology and the latest tools. Rather, we should focus on the fundamentals. What more does an average newcomer know about some popular tool like `Next.js` other than the fact that it is a framework for React and is used for Server Side Rendering? Not much. But yet they must learn it. The passion of learning has been overtaken by the fear of not being able to keep up. And this is not something that is wrong. The fear is real. Not because some influencer said so, but because we can see it happening. 
 
-Any word wrapped with two tildes (like `~~this~~`) will appear ~~crossed out~~.
+This is what I meant when I said we have forgotten how to code. We have forgotten how to learn. We have forgotten how to teach. And this needs to be fixed. How? I don't know. But it is going to require a lot of effort and patience.
+
+As Amelia Earhart said:
+
+> ... the process is its own reward.
+
+Thank you for reading. I hope you have the day you deserve. 
