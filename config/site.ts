@@ -1,12 +1,11 @@
 export const siteConfig = {
-  name: "JollyBlog",
+  name: "dev-xdd",
   url: "https://example.com",
   description: "Nextjs 14 blog using velite, tailwind and shadcn",
-  author: "JollyCoding",
+  author: "akm-xdd",
   links: {
-    twitter: "https://twitter.com/jollyshopland",
-    github: "https://github.com/jolbol1",
-    personalSite: "https://jamesshopland.com",
+    github: "https://github.com/akm-xdd",
+    linkedin: "https://linkedin.com/in/akm-glhf"
   },
 };
 

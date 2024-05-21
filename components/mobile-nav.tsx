@@ -42,9 +42,9 @@ export function MobileNav() {
           <Link
             target="_blank"
             rel="noreferrer"
-            href={siteConfig.links.twitter}
+            href={siteConfig.links.linkedin}
           >
-            Twitter
+            Linkedin
           </Link>
         </div>
       </SheetContent>
