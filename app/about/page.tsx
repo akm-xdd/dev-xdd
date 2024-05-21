@@ -21,25 +21,33 @@ export default async function AboutPage() {
       <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
         <div className="min-w-48 max-w-48 flex flex-col gap-2">
           <Avatar className="h-48 w-48">
-            <AvatarImage src="/avatar.png" alt={siteConfig.author} />
+            <AvatarImage src="https://avatars.githubusercontent.com/u/110248822?v=4" alt={siteConfig.author} />
             <AvatarFallback>JC</AvatarFallback>
           </Avatar>
           <h2 className="text-2xl font-bold text-center break-words">
             {siteConfig.author}
           </h2>
           <p className="text-muted-foreground text-center break-words">
-            Software Developer
+            Backend Developer
+          </p>
+          <p className="text-center text-muted-foreground">
+          🎵 Vibin&#39;
           </p>
         </div>
+
         <p className="text-muted-foreground text-lg py-4">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum
+          Hi! Welcome to my blog. I&apos;m a backend developer with a little bit of frontend experience. I like to learn, code and play video games. You can take a look at my projects on my GitHub profile. I&apos;m always open to new opportunities and challenges. Feel free to contact me if you have any questions or suggestions. 
+          <br/>
+          <br/>
+
+          &quot;Your brain gets smart but your head gets dumb.&quot; <br/>
+          &nbsp; &nbsp;- <a href="https://youtu.be/L_jWHffIx5E?si=91AnRhiEUAiCHAOo&t=63">Smash Mouth</a>
+
         </p>
+
+      </div>
+      <div>
+        
       </div>
     </div>
   );

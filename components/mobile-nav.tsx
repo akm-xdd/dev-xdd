@@ -26,8 +26,8 @@ export function MobileNav() {
           href="/"
           className="flex items-center"
         >
-          <Icons.logo className="mr-2 h-4 w-4" />
-          <span className="font-bold">{siteConfig.name}</span>
+          {/* <Icons.logo className="mr-2 h-4 w-4" /> */}
+         { <span className="font-bold">&#123;{siteConfig.name}&#125;</span> }
         </MobileLink>
         <div className="flex flex-col gap-3 mt-3">
           <MobileLink onOpenChange={setOpen} href="/blog">
