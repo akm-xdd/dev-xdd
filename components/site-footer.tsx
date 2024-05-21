@@ -27,7 +27,7 @@ export function SiteFooter() {
           
         </div>
         <div className="mb-2 flex space-x-3 text-sm text-muted-foreground">
-        Shoutout to &nbsp; <a href="https://github.com/jolbol1">jolbol1</a> for the template.
+        Shoutout to &nbsp; <a href="https://github.com/jolbol1">jolbol1</a> &nbsp; for the template.
         </div>
       </div>
     </footer>
