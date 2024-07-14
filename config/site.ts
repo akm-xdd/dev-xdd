@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "{dev-xdd}",
+  name: "dev-xdd",
   url: "https://www.dev-xdd.tech/",
   description: "Nextjs 14 blog using velite, tailwind and shadcn",
   author: "akm-xdd",
