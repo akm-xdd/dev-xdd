@@ -123,7 +123,7 @@ Sheesh! Now that's a long error message. But don't worry, you just need to read 
 
 ![no-html-file-important-lines](./tdd-with-django/no-html-file-important-lines.png)
 
-The first line tells us which test case findAllInRenderedTree, and the second one tells us why the test failed. Evrerything between them is the stack trace. The third line tells us that we ran **2** tests, which is correct and the fourth line tells us that **1** of them failed.
+The first line tells us which test case failed, and the second one tells us why the test failed. Evrerything between them is the stack trace. The third line tells us that we ran **2** tests, which is correct and the fourth line tells us that **1** of them failed.
 
 This is enough information for us. Notice how one test failing did not stop the other tests from executing. How about we fix the test now? Let's create the `home.html` file in the `templates` directory of the `tdd` app.
 
@@ -151,7 +151,7 @@ Since we are now accessing the templates from the `tdd`, it is only fair that we
 
 ![template-test-passed](./tdd-with-django/template-test-passed.png)
 
-Great! That is one more item checked off the list. On to the last onemptied, checking whether certain elements exist on the page. Here is the code for the test:
+Great! That is one more item checked off the list. On to the last one, checking whether certain elements exist on the page. Here is the code for the test:
 
 ```python
 from django.test import TestCase
