@@ -1,0 +1,97 @@
+---
+title: Auth or N-auth? DIY Auth for your Next Project
+description: It is time to have "the talk" about auth in your next project.
+date: 2024-06-18
+tags: ["Auth", "software", "security", "learn" ]
+published: true
+---
+
+# Some context
+
+Today, we are going to talk about auth in your next project. A much needed reminder for all of you that when I say `next project`, I **DO NOT** mean `next.js` project. Now that we have that out of the way, let's dive in.
+
+## Why auth? 
+
+I was travelling through the ghats of Varanasi when I realized that the world is a scary place. And so is the internet. People you might want to stay away from, might not want to stay away from you. And that is why we need auth. You need to be able to say "No" to people who want to get in. And "Yes" to people who you want to let in. Sounds simpler when you do it in person.
+
+But on the internet, people will get to you and they will get to you fast. So, you need to be prepared. You need to have a plan. You need to have auth. Auth stands for authentication and authorization. Although, I am not sure of the order. These terms are often used interchangeably. But they are not the same. Authentication confirms your identity, while authorization confirms your access level. For example, at a school, you are authneticated to enter the school if you can present an ID card, but you cannot enter the staff room unless you are authorized to do so.
+
+Auth basically checks whether you are allowed to access something or not. The simplest example is when you login to your email, you are asked for your credentials. And if you enter them correctly, you are allowed to access your email. You can do whatever you want to do with your emails. But should you decide that Outlook needs to be purged from the face of the earth, you will not be able to do that. Because you are not authorized to do that.
+
+But why do all this? Because you need protection. You can't just let anyone do anything they want with your software. This also ensures that you can track who did what. And if something goes wrong, you can always blame it on Python.
+
+## How is auth done?
+
+Typically, when building a software, you come to a point where you are like "I can't let anyone outside of my team access the mess I have created." You can now simply just add auth and you are good to go. But how do you do that?
+
+### DIY 
+
+You come up with a wonderful plan. You learn all the fundamentals about security, consume hours of content, read 10 blogs, and then you start doing it on your own. You sit down for hours and come up with something brilliant that you can slap onto your resume. 
+
+### Let someone else do it 
+
+You tell the intern to do it.
+
+### Use a third party service
+
+You use a third party service that does all the heavy lifting for you. You just need to integrate it into your software and you are good to go.
+
+# But which approach is better?
+
+Wouldn't you like to know? Well, it is kind of difficult to answer that. It depends on your use case. And not just the use case, it also depends upon how much heavy lifting you want to do. I'll be the good teacher and give you an example.
+
+Consider these scenarios:
+
+1. You are building a small project. You get it done in a week and it took you only some hours to complete it. But now you want to add auth. Do you want to spend another week on it? Or do you want to spend a few hours and get it done? What if the project may be a small one but you want to scale it later or it may have a larger impact than it seems? 
+
+2. You are building a project that is going to be used by a lot of people. You have spent months on it and you are finally done. You now need to implement auth. Do you sit this one out and use a third party service? What if you want much more control over your auth? What if you want to customize it according to your needs? 
+
+These are pretty much the questions you need to answer. And the answer is not just a yes or no, it can be a maybe. And that maybe is what you need to figure out. A complete picture of what your requirements are and what you want to achieve is mandatory. And auth is not just limited to these two approaches. Do you want a user to be able to login using username, or is it going to be email? Do you want to use a passwordless approach? Do you want to use social logins? How will you manage sessions? Will it be role-based? And a lot more.
+
+# What does it all mean?
+
+The point is that auth is a crucial part of your software. It is not something you can just ignore. You need to have a plan. You need to know what you are doing and why you are doing it. A bad decision can lead to a lot of problems. Not just for the users, but also for you. None of this is a discussion for one meeting. 
+
+The best approach in whatever limited experience I have, is to start with a third party service. It allows you to quickly assess whether you need to spend more time on it or not. Since you now have an auth in place, you can judge better whether it is working for you or not. And then you can decide whether you want to continue with it or not. Debatable but a good starting point.
+
+
+# The pros and cons
+
+A brief summary of the pros and cons of each approach, if you don't want to read the whole thing.
+
+## DIY
+
+### Pros
+
+- You have complete control over your auth
+- You can customize it according to your needs
+- Teaches you a lot about security
+- You can slap it onto your resume if it is reallllly good
+
+### Cons
+
+- You need to spend a lot of time on it
+- You need to know what you are doing
+- You need to keep up with the latest trends in security
+- You need to be prepared for a lot of debugging
+
+
+## Third party services
+
+### Pros
+
+- Quick to implement
+- Easy to use
+- Professional and up-to-date
+- You can focus on your project
+
+### Cons
+
+- Unable to fine tune according to your needs
+- You are dependent on the service, if it goes down, you go down
+- You need to pay for it (or not, depending on the service)
+- You need to trust the service with your data
+
+# Conclusion
+
+It boils down to what you want to achieve. Requirements are the key. Also, you need to be comfortable with what you are doing. You cannot simply assume that you can do it all. You need to be prepared for the worst. And you need to have a plan. Auth is not just a feature, it is a necessity. And you need to treat it like one.
