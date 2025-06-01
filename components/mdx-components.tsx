@@ -1,6 +1,7 @@
 import Image from "next/image";
 import * as runtime from "react/jsx-runtime";
 import { Callout } from "./callout";
+import { Pre } from "./ui/mdx-pre";
 import { cn } from "@/lib/utils";
 
 const useMDXComponent = (code: string) => {
@@ -11,6 +12,7 @@ const useMDXComponent = (code: string) => {
 const components = {
   Image,
   Callout,
+  pre: Pre,
 };
 
 interface MdxProps {
