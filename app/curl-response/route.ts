@@ -50,7 +50,7 @@ export async function GET() {
     chalk.bold.underline.hex('#00ffff')('✦ Links'),
     chalk.hex('#7fffd4')('🌐 Blog:')     + ' https://dev-xdd.tech',
     chalk.hex('#7fffd4')('🐙 GitHub:')   + ' https://github.com/akm-xdd',
-    chalk.hex('#7fffd4')('🔗 LinkedIn:') + ' https://linkedin.com/in/your-profile',
+    chalk.hex('#7fffd4')('🔗 LinkedIn:') + ' https://linkedin.com/in/akm-glhf',
   ].join('\n')
 
   // 9) Combine everything
