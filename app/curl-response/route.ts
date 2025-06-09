@@ -1,6 +1,7 @@
 // app/curl-response/route.ts
 import { NextResponse } from 'next/server'
 import figlet from 'figlet'
+// @ts-ignore: no types for this importable font module
 import slantFont from 'figlet/importable-fonts/Slant.js'
 import gradient from 'gradient-string'
 import chalk from 'chalk'
