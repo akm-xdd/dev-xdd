@@ -6,6 +6,8 @@ import slantFont from 'figlet/importable-fonts/Slant.js'
 import gradient from 'gradient-string'
 import chalk from 'chalk'
 
+chalk.level = 3
+
 // 1) Bundle the Figlet font
 figlet.parseFont('Slant', slantFont)
 
@@ -35,12 +37,12 @@ export async function GET() {
   const framedBanner = [top, empty, ...content, empty, bottom].join('\n')
 
   // 7) Draw the Indian flag stripes with blue Chakra
-  const stripe = (hex: string) => chalk.bgHex(hex)(' '.repeat(width + pad * 2 + 2))
-  const saffron = stripe('#FF9933')
+  const stripeRGB = (r: number, g: number, b: number) => chalk.bgRgb(r, g, b)(' '.repeat(width + pad * 2 + 2))
+  const saffron = stripeRGB(255, 153,  51)
   const whiteArr = Array(width + pad * 2 + 2).fill(chalk.bgWhite(' '))
   whiteArr[Math.floor(whiteArr.length/2)] = chalk.bgWhite.blueBright('☸')
   const white   = whiteArr.join('')
-  const green   = stripe('#138808')
+  const green   = stripeRGB( 19, 136,   8)
 
   // 8) Add a “Links” section in neon accents
   const info = [
