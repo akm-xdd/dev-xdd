@@ -7,6 +7,7 @@ interface TagProps {
   current?: boolean;
   count?: number;
 }
+
 export function Tag({ tag, current, count }: TagProps) {
   return (
     <Link
@@ -14,7 +15,7 @@ export function Tag({ tag, current, count }: TagProps) {
         variant: current ? "default" : "secondary",
         className: "no-underline rounded-md",
       })}
-      href={`/tags/${slug(tag)}`}
+      href={`/tags/${slug(tag.toLowerCase())}`}
     >
       {tag} {count ? `(${count})` : null}
     </Link>
