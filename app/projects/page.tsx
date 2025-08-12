@@ -38,7 +38,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
         <div className="flex-1 space-y-4">
           <h1 className="inline-block font-black text-4xl lg:text-5xl">Projects</h1>
           <p className="text-xl text-muted-foreground">
-            A collection of things I've built and learned from.
+            A collection of things I&apos;e built and learned from.
           </p>
         </div>
       </div>
