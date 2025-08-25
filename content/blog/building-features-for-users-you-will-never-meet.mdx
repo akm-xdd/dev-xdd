@@ -1,0 +1,181 @@
+---
+title: Building features for users you will never meet
+description: Or how I learned saving money is not always optimal.
+date: 2025-07-29
+tags: ["engineering", "career", "first-job", "production", "startup", "lessons-learned"]
+published: true
+---
+
+
+# Some Context (yet again)
+Picture this: I'm at my first job, one month in. I'm feeling good. The previous PR got merged, went into prod and not a single incident reported. And I have also just discovered my newfound love for Coffee. Life is good.
+
+Then one day, I get called into the infamous "Whiteboard Room". The "Whiteboard" is empty, but I sense not for long. The CTO and my team lead walk in. And then they start drawing something. I take out my pen and the ol' reliable notebook for taking notes. I get lost halfway through and decide to zone out. Half hour later, I hear "So how long do you think you will take for the first demo?". Who? Me? Yeah, me. Now the issue is that I don't know what I'm supposed to build, so I look at the "Whiteboard". And my brain just decides to leave the room. I ask the team lead, the most generic product question, "What exactly is this solving?" and BOOM, I got a second explanation, only this time, a dumbed down version.
+
+
+The feature was simple. A user connects their calendar on our platform, and every meeting in their calendar gets a bot scheduled, which records the meetings, and stores the transcript. We take the transcript, turn it into a conversation text file and then use AI to summarize the meeting, generate action items, key insights, etc. and send it to the user in their DM as well as on the platform. The user can also chat with that meeting to ask follow-ups. What does this achieve? It boosts productivity. You don't have to ping your co-workers to ask what they're working on and wait for their responses anymore. I have no complaints. But how do I build this? 
+
+Turns out, creating your own bots, recording meetings, transcribing them and storing all of this info is expensive. We do not have that kind of money as well as that kind of tech. The solution? Use a third party Bot Provider: Recall. So I needed to create wrappers for Recall APIs to schedule bots, to get transcripts, etc. Also, every scheduled bot costs money, even if it doesn't join a meeting. I was told this VERY clearly. "Every bot costs money, even for a 5 second meeting for testing.", were the exact words. Real money. Even if they just sit there, waiting for a meeting that never happens. Like hiring a photographer for a wedding where the bride might not show up.
+
+And that's when I made my first mistake. I listened.
+
+## The Wrong Problem
+
+Now, when someone tells you that something costs money, what's your first instinct? Save money, right? I mean, I'm the guy who still has GitHub Student Pack one year after graduation. Free stuff is my love language.
+
+So naturally, I approached this like a business problem. Every unnecessary bot was money being set on fire. I rolled up my sleeves and decided I was going to be THAT developer. You know, the one who actually cares about the company's AWS bill.
+
+## My "Brilliant" Architecture
+
+Now, I am not ashamed to admit it, but what I'm about to share with you, might be the most absurd thing you have ever heard when it comes to architecting a system. So brace yourselves.
+
+Here was my master plan:
+
+1. User connects their calendar
+2. Immediately schedule a bot for the NEXT meeting in their calendar
+3. The meeting ends (for any reason - completed, cancelled, bot kicked out, whatever)
+4. Receive webhook events
+5. Process the transcript if successful, ignore if failed
+6. Schedule a bot for the NEXT meeting
+
+Sequential. Simple. Cost-effective. What could go wrong?
+
+Everything. Everything could go wrong.
+
+## The Cascade of Disasters
+
+Let me paint you another picture. You're a new user, excited to try our platform. It's Monday morning, and you connect your calendar. The only meeting in your calendar right now? That recurring Friday standup you never miss.
+
+My system looks at your calendar and goes, "Ah, I see your NEXT meeting is... Friday! See you then! 👋"
+
+An hour later, your manager schedules a 10 AM meeting for today. No bot.
+Your colleague adds an 11 AM sync. No bot.
+That 2 PM client demo that just got confirmed? No bot.
+The emergency 3 PM all-hands that just popped up? Absolutely no bot.
+
+But that Friday standup? Oh, we got you covered! And after that Friday meeting ends and gets processed? The system schedules your NEXT meeting, which is... next Friday.
+
+I had built a meeting-avoidance system. It was beautiful in its stupidity.
+
+But wait, it gets better! Since meetings were processed sequentially, if you had back-to-back meetings (and who doesn't?), by the time the first meeting finished processing, your second meeting was already halfway done. No bot for you!
+
+The complaints started rolling in:
+
+"Why wasn't my meeting recorded?"
+"The bot never joined"
+"Is the system broken?"
+
+Is the system broken? No, the system was working EXACTLY as I designed it. That was the problem.
+
+
+## The Band-Aid Solution
+
+I couldn't just tear it all down (sunk cost fallacy is real), so I added a scheduler. Every 15 minutes, it would check for meetings in the next week that didn't have bots and schedule them.
+This "simple" scheduler was basically admitting defeat every 15 minutes:
+
+- "Did I miss any meetings?"
+- "Yeah, like 12"
+- "Cool, let me grab those"
+
+It worked... kind of. But now I had two systems: my original sequential disaster and a scheduler doing all the real work while the sequential system scheduled one lonely meeting like "I'm helping!"
+
+### When Everything Else Breaks Too
+
+But here's the thing - my sequential system was just ONE problem in a house of cards:
+
+**The Legacy Code Monster**: Those LLM calls to generate summaries? All synchronous. Legacy code from before my time. If 5 meetings ended at the same time, they processed one... by... one. User 5 would get their summary 3 minutes after User 1, even though their meetings ended simultaneously.
+
+**The Recall Reliability Roulette**: Sometimes Recall just... didn't send transcripts. Even with retries. So what did the system do? Send empty transcripts to the LLM, which would then helpfully generate completely fictional meeting summaries.
+
+"Action items:
+
+- Bob will follow up on the thing (there is no Bob)
+- Team agreed to reconvene Monday (they didn't)
+- Budget approved for Q3 (the meeting was a client demo)"
+
+Corporate fiction at its finest!
+
+
+## The Reckoning
+
+After weeks of this, the CTO wanted answers. The conversation went something like this:
+
+```
+Me: "Why do we even need real-time updates?"
+Everyone: 😠
+Me: "Fine, give me budget and I'll fix it in ONE day"
+(Thinking they'd take a week to decide, giving me time to research)
+CTO: "Done. See you tomorrow."
+Me: "Wait, what—"
+CTO: "You said one day."
+Me: "..."
+```
+
+### The Panic-Driven Miracle
+It's amazing what pure fear can do for your architecture skills. In 15 minutes of raw panic, I designed what would become the actual solution:
+
+#### 24-hour rolling window approach:
+
+- Schedule bots for the next 24 hours only
+- Scheduler runs every 15 minutes, adding new meetings as the window rolls forward
+- Exponential backoff for retries (5s, 10s, 15s)
+- Empty transcripts = missed meeting (no more hallucinations)
+
+Why was this brilliant?
+
+- Not too expensive (only 24 hours of meetings)
+- Not too conservative (catches everything that matters)
+- Self-healing (updates every 15 minutes)
+- Handles newly added meetings
+- Works around the synchronous LLM calls I couldn't fix
+
+I built it overnight. Deployed it the next day.
+
+100% accuracy.
+
+## What I Actually Learned
+
+Looking back, this disaster taught me everything about building for real users:
+
+**You're not solving YOUR problem**: : I was so focused on saving money (my concern) that I forgot users just wanted their meetings recorded (their concern).
+
+**The expensive solution might BE the business solution**: Those "wasted" bots on cancelled meetings? Insignificant compared to missing actual meetings.
+
+**Premature optimization is evil**: My clever cost-saving architecture cost more in engineering hours and user trust than it ever saved in bot fees.
+
+**Sometimes panic creates elegance**: My panic-built solution was actually MORE elegant than the original. A 24-hour rolling window that updates every 15 minutes? That's clean, simple, and self-healing. Turns out, pressure can create diamonds.
+
+**Silent users are happy users**: Those users I'll never meet? They don't know about my sequential disaster, my panic night, or the architectural journey. They just know their meetings get recorded. Every time. Without fail.
+
+## The Beautiful Paradox
+
+There's something poetic about building features for users you'll never meet. They exist only as:
+
+- Error logs when something breaks
+- Support tickets when they're confused
+- Silence when everything works
+
+You'll never get a thank you email saying "Great job on that 24-hour rolling window architecture!" They don't care about your code. They care that when they have a meeting, it gets recorded. When they need a summary, it exists. When they search for that action item from last Tuesday, they find it.
+
+The invisible contract is simple: Make it work, and they'll never think about you. Break it, and they'll definitely let you know.
+
+
+## The Aftermath
+
+Four months in, internal restructuring happened (startup life!). But that meeting system? Still running. Still using the 24-hour rolling window. Still hitting 100% accuracy.
+
+Sometimes I wonder if anyone even knows the story behind it. The sequential disaster, the scheduler band-aid, the panic night, the 15-minute architecture session. Probably not. And that's exactly how it should be.
+
+The best code is invisible. The best features are forgotten. The best systems are the ones nobody thinks about because they just work.
+
+To those users I'll never meet: Your meetings are safe. I promise.
+
+
+Thanks for reading. Next time you're building something, ask yourself two questions:
+
+- `What am I building?`
+- `What is it supposed to achieve?`
+
+If your answers don't align, you're probably solving the wrong problem. I learned that the hard way.
+
+I will try to post the actual architecture comparison soon. Stay tuned!
